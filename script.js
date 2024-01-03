@@ -550,7 +550,7 @@ function refresh() {
 
 function removeBoard(boardIndex) {
   if (boardIndex == boardName.length - 1) {
-    alert("Done устгаж болохгүй");
+    alert("Сүүлийн самбарыг устгаж устгаж болохгүй");
   } else if (boardName.length < 3) {
     alert("Багадаа 2 самбар байна");
   } else {
@@ -562,7 +562,7 @@ function removeBoard(boardIndex) {
 function editBoardTitle(boardIndex) {
   console.log({ boardName });
   let editTit = prompt("Please enter your title", boardName[boardIndex].title);
-  while (editTit == "") {
+  while (editTit == "" || editTit == "null" || editTit == " ") {
     editTit = prompt("Please enter your title");
   }
   console.log({ boardName });
