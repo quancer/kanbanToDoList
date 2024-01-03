@@ -451,10 +451,28 @@ function refresh() {
     // console.log("hi=", e.title);
     const board = createTag("div", "board");
     const boardHead = createTag("div", "board-header");
-    boardHead.innerText = e.title;
+    // boardHead.innerText =
     const boardLength = createTag("p");
-    boardLength.innerText = e.arr.length;
+    boardLength.innerText = e.title + " - " + e.arr.length;
+    const titleIcons = createTag("div", "titleIcons");
+    const titleRemove = createTag("div", "done");
+    const titleRemoveIcon = createTag("i");
+    titleRemoveIcon.setAttribute("class", "fa-solid fa-x");
+    titleRemove.appendChild(titleRemoveIcon);
+    titleRemove.addEventListener("click", () => {
+      removeBoard(boardIndex);
+    });
+    const titleEdit = createTag("div", "done");
+    const titleEditIcon = createTag("i");
+    titleEditIcon.setAttribute("class", "fa-regular fa-pen-to-square");
+    titleEdit.appendChild(titleEditIcon);
+    titleIcons.appendChild(titleRemove);
+    titleIcons.appendChild(titleEdit);
+    titleEdit.addEventListener("click", () => {
+      editBoardTitle(boardIndex);
+    });
     boardHead.appendChild(boardLength);
+    boardHead.appendChild(titleIcons);
     board.appendChild(boardHead);
     const cards = createTag("div", "details");
     const list = e.arr;
@@ -528,5 +546,27 @@ function refresh() {
     board.appendChild(adds);
     boards.appendChild(board);
   });
+}
+
+function removeBoard(boardIndex) {
+  if (boardIndex == boardName.length - 1) {
+    alert("Done устгаж болохгүй");
+  } else if (boardName.length < 3) {
+    alert("Багадаа 2 самбар байна");
+  } else {
+    boardName.splice(boardIndex, 1);
+    refresh();
+  }
+}
+
+function editBoardTitle(boardIndex) {
+  console.log({ boardName });
+  let editTit = prompt("Please enter your title", boardName[boardIndex].title);
+  while (editTit == "") {
+    editTit = prompt("Please enter your title");
+  }
+  console.log({ boardName });
+  boardName[boardIndex].title = editTit;
+  refresh();
 }
 refresh();
