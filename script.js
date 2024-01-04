@@ -78,9 +78,7 @@ addBoard.addEventListener("click", () => {
   boardName.push({ title: addBoardName, arr: [] });
   boardName.push(v);
   console.log(boardName);
-  renderStatus();
   refresh();
-  // headerTitle.innerText = addBoardName;
 });
 // addBoard.innerHTML = addBoardIcon + " Add board";
 header.appendChild(headerTitle);
@@ -430,19 +428,7 @@ function editForm(num1, num2) {
     }
   });
 }
-function renderStatus() {
-  stat.innerHTML = "";
-  statInput.innerHTML = "";
-  for (let j = 0; j < boardName.length; j++) {
-    const statOption = createTag("option");
-    statOption.setAttribute("value", j);
-    statOption.innerText = boardName[j].title;
-    count++;
-    statInput.appendChild(statOption);
-  }
-  stat.appendChild(statInput);
-}
-
+let dragIndex1, dragIndex2;
 function refresh() {
   boards.innerHTML = "";
   // console.log(boardName);
@@ -450,6 +436,13 @@ function refresh() {
     // for(i=0; i<boarname.length;i++)
     // console.log("hi=", e.title);
     const board = createTag("div", "board");
+    board.addEventListener("dragover", (e) => {
+      e.preventDefault();
+    });
+    board.addEventListener("drop", (e) => {
+      e.preventDefault();
+      addDragCard(boardIndex);
+    });
     const boardHead = createTag("div", "board-header");
     // boardHead.innerText =
     const boardLength = createTag("p");
@@ -487,6 +480,13 @@ function refresh() {
     e.arr.map((event, indi) => {
       console.log("index", indi);
       const card = createTag("div", "card");
+      card.setAttribute("draggable", "true");
+      card.addEventListener("dragstart", () => {
+        // ev.preventDefault();
+        dragIndex1 = boardIndex;
+        dragIndex2 = indi;
+        // console.log(dragIndex1, dragIndex2);
+      });
       const detail = createTag("div", "card-details");
       const detailTitle = createTag("h4", "detail-title");
       detailTitle.innerText = event.title;
@@ -516,7 +516,7 @@ function refresh() {
       removeIcon.setAttribute("class", "fa-solid fa-x");
       remove.appendChild(removeIcon);
       remove.addEventListener("click", () => {
-        e.arr.splice(indi, 1);
+        removeCard(boardIndex, indi);
         refresh();
       });
       // const remove = createTag("div", "remove");
@@ -567,6 +567,16 @@ function editBoardTitle(boardIndex) {
   }
   console.log({ boardName });
   boardName[boardIndex].title = editTit;
+  refresh();
+}
+function removeCard(boardIndex, indi) {
+  boardName[boardIndex].arr.splice(indi, 1);
+  refresh();
+}
+function addDragCard(index) {
+  let dragItem = boardName[dragIndex1].arr[dragIndex2];
+  boardName[dragIndex1].arr.splice(dragIndex2, 1);
+  boardName[index].arr.push(dragItem);
   refresh();
 }
 refresh();
