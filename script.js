@@ -462,7 +462,11 @@ function refresh() {
     titleIcons.appendChild(titleRemove);
     titleIcons.appendChild(titleEdit);
     titleEdit.addEventListener("click", () => {
-      editBoardTitle(boardIndex);
+      if (boardIndex == boardName.length - 1) {
+        alert("Done өөрчлөх боломжгүй");
+      } else {
+        editBoardTitle(boardIndex);
+      }
     });
     boardHead.appendChild(boardLength);
     boardHead.appendChild(titleIcons);
